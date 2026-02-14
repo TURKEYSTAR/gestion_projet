@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+    <div class="mb-4">
+        <a th:href="@{/projets}" class="text-decoration-none text-muted fw-bold">
+            <i class="fa-solid fa-arrow-left me-2"></i> Retour à la liste
+        </a>
+    </div>
+
+    <div class="card border-0 mb-4 overflow-hidden" style="border-left: 6px solid var(--secondary-color) !important;">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <span class="badge bg-success mb-2 px-3 py-2 rounded-pill">En Cours</span>
+                    <h1 class="fw-bold mb-1" th:text="${projet.nom}">Optimisation IA pour Santé</h1>
+                    <p class="text-muted mb-0">
+                        <i class="fa-solid fa-university me-2 text-warning"></i>
+                        Institution: <span th:text="${projet.institution}">ESMT Dakar</span>
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <p class="text-muted small mb-0">Budget Estimé</p>
+                    <h3 class="fw-bold text-success" th:text="${#numbers.formatDecimal(projet.budget, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'">
+                        15 000 000 FCFA
+                    </h3>
+                </div>
+            </div>
+            <hr class="my-4 opacity-10">
+            <div class="d-flex gap-2">
+                <a th:href="@{/projets/edit/{id}(id=${projet.id})}" class="btn btn-primary px-4">
+                    <i class="fa-solid fa-pen me-2"></i> Modifier
+                </a>
+                <a th:href="@{/projets/delete/{id}(id=${projet.id})}"
+                   class="btn btn-outline-danger"
+                   sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                    <i class="fa-solid fa-trash me-2"></i> Supprimer
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 p-4 mb-4 h-100">
+                <h4 class="fw-bold mb-3" style="color: var(--primary-color);">Description du Projet</h4>
+                <p class="text-muted lh-lg" th:text="${projet.description}">
+                    Ce projet vise à développer des algorithmes d'intelligence artificielle avancés pour l'analyse d'images médicales...
+                </p>
+
+                <h4 class="fw-bold mt-4 mb-3" style="color: var(--primary-color);">Domaine de Recherche</h4>
+                <div class="d-flex gap-2 flex-wrap">
+                    <span class="badge badge-status py-2 px-3" th:text="${projet.domaine}">Intelligence Artificielle</span>
+                    <span class="badge badge-status py-2 px-3">Santé</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 p-4 mb-4">
+                <h4 class="fw-bold mb-4" style="color: var(--primary-color);">Avancement</h4>
+                <div class="text-center mb-4">
+                    <div class="mx-auto d-flex align-items-center justify-content-center"
+                         style="width: 120px; height: 120px; border: 8px solid #fed7aa; border-radius: 50%;">
+                        <div class="text-center">
+                            <span class="h2 fw-bold d-block mb-0" th:text="${projet.avancement} + '%'">75%</span>
+                            <small class="text-muted">Fait</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="small">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Début:</span>
+                        <span class="fw-bold" th:text="${projet.dateDebut}">01 Jan 2025</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Fin Prévue:</span>
+                        <span class="fw-bold" th:text="${projet.dateFin}">31 Déc 2026</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 p-4">
+                <h4 class="fw-bold mb-4" style="color: var(--primary-color);">Équipe</h4>
+                <div class="mb-4">
+                    <p class="small text-uppercase fw-bold text-warning mb-2">Responsable</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                             style="width: 45px; height: 45px;">MD</div>
+                        <div>
+                            <p class="mb-0 fw-bold">Moustapha DER</p>
+                            <small class="text-muted">Chef de Projet</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="small text-uppercase fw-bold text-warning mb-2">Participants</p>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center"
+                             style="width: 32px; height: 32px; font-size: 0.8rem;">ET</div>
+                        <span class="small text-muted">Étudiant Test</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

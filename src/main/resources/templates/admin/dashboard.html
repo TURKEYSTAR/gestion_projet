@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Dashboard Administrateur</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold"><i class="fa-solid fa-chart-line me-2" style="color: var(--secondary-color);"></i>Dashboard</h1>
+        <div>
+            <a href="#" class="btn btn-primary shadow-sm">
+                <i class="fa-solid fa-download me-2"></i>Exporter Rapport
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card p-4 border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small fw-bold text-uppercase mb-1">Total Projets</p>
+                        <h2 class="fw-bold mb-0" style="color: var(--primary-color);">42</h2>
+                    </div>
+                    <div class="fs-1 opacity-25" style="color: var(--secondary-color);">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-4 border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small fw-bold text-uppercase mb-1">Budget Total</p>
+                        <h2 class="fw-bold mb-0 text-success">1.2M €</h2>
+                    </div>
+                    <div class="fs-1 opacity-25 text-success">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-4 border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small fw-bold text-uppercase mb-1">Participants</p>
+                        <h2 class="fw-bold mb-0" style="color: var(--accent-color);">156</h2>
+                    </div>
+                    <div class="fs-1 opacity-25" style="color: var(--accent-color);">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-4 border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted small fw-bold text-uppercase mb-1">Avancement</p>
+                        <h2 class="fw-bold mb-0" style="color: var(--secondary-color);">68%</h2>
+                    </div>
+                    <div class="fs-1 opacity-25" style="color: var(--secondary-color);">
+                        <i class="fa-solid fa-spinner"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="card border-0 p-4 h-100">
+                <h5 class="fw-bold mb-4"><i class="fa-solid fa-chart-pie me-2 text-warning"></i>Projets par Domaine</h5>
+                <div style="height: 300px; position: relative;">
+                    <canvas id="chartDomaines"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 p-4 h-100">
+                <h5 class="fw-bold mb-4"><i class="fa-solid fa-chart-bar me-2 text-warning"></i>Statut des Projets</h5>
+                <div style="height: 300px; position: relative;">
+                    <canvas id="chartStatut"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 p-4 shadow-sm">
+        <h5 class="fw-bold mb-3">Actions Rapides</h5>
+        <div class="d-flex flex-wrap gap-2">
+            <a th:href="@{/users/new}" class="btn btn-primary">
+                <i class="fa-solid fa-user-plus me-2"></i>Nouvel Utilisateur
+            </a>
+            <a th:href="@{/projets/new}" class="btn btn-primary">
+                <i class="fa-solid fa-plus-circle me-2"></i>Nouveau Projet
+            </a>
+            <a href="#" class="btn btn-light border">
+                <i class="fa-solid fa-cogs me-2"></i>Paramètres Système
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Couleurs du thème Ginger
+            const themeColors = {
+                ginger: '#b45309',
+                amber: '#f59e0b',
+                brown: '#78350f',
+                cream: '#fed7aa',
+                white: '#ffffff'
+            };
+
+            // 1. Graphique Pie (Domaines)
+            const ctxDomaine = document.getElementById('chartDomaines').getContext('2d');
+            new Chart(ctxDomaine, {
+                type: 'doughnut',
+                data: {
+                    labels: ['IA', 'Santé', 'Énergie', 'Agriculture'],
+                    datasets: [{
+                        data: [15, 12, 8, 7],
+                        backgroundColor: [themeColors.brown, themeColors.ginger, themeColors.amber, themeColors.cream],
+                        borderWidth: 2,
+                        borderColor: themeColors.white
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // 2. Graphique Bar (Statuts)
+            const ctxStatut = document.getElementById('chartStatut').getContext('2d');
+            new Chart(ctxStatut, {
+                type: 'bar',
+                data: {
+                    labels: ['Planifié', 'En cours', 'Terminé', 'En pause'],
+                    datasets: [{
+                        label: 'Nombre de projets',
+                        data: [8, 22, 10, 2],
+                        backgroundColor: themeColors.ginger,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>

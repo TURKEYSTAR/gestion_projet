@@ -1,0 +1,89 @@
+:root {
+    /* Palette Ginger & Earth */
+    --primary-color: #78350f;    /* Marron Terre */
+    --secondary-color: #b45309;  /* Orange Ginger brûlé */
+    --accent-color: #f59e0b;     /* Ambre vibrant */
+    --bg-light: #fffcf9;         /* Blanc cassé crème */
+    --text-dark: #451a03;        /* Texte presque noir marron */
+    --text-light: #92400e;       /* Texte secondaire */
+    --white: #ffffff;
+
+    --radius-md: 12px;
+    --shadow: 0 4px 20px rgba(120, 53, 15, 0.08);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    /* Dégradé léger pour le fond */
+    background-image: linear-gradient(135deg, #fffcf9 0%, #ffedd5 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar Style */
+.navbar {
+    background: var(--white);
+    border-bottom: 2px solid #fed7aa;
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    color: var(--primary-color) !important;
+    font-size: 1.4rem;
+}
+
+.nav-link {
+    color: var(--text-light) !important;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--secondary-color) !important;
+}
+
+/* Cards & Components */
+.card {
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    background: var(--white);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.btn-primary {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+    border-radius: 8px;
+    padding: 10px 25px;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color) !important;
+}
+
+/* Badges */
+.badge-status {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+/* Formulaires */
+.form-control {
+    border: 2px solid #fed7aa;
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(245, 158, 11, 0.25);
+}

@@ -1,4 +1,4 @@
-package com.misi2.springsecuritydemo.controller;
+package com.projet.javaee.controller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Liste des Projets</title>
+</head>
+
+<body>
+
+    <div layout:fragment="content">
+        <div class="d-flex justify-between align-center mb-4">
+            <h1>Mes Projets</h1>
+            <a th:href="@{/projets/new}" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> Déclarer un Projet
+            </a>
+        </div>
+
+        <!-- Filtres (Visuel) -->
+        <div class="card" style="padding: 1rem; margin-bottom: 2rem;">
+            <form class="d-flex gap-2 align-center">
+                <i class="fa-solid fa-filter" style="color: var(--secondary-color);"></i>
+                <input type="text" class="form-control" placeholder="Rechercher un projet..." style="max-width: 300px;">
+                <select class="form-control" style="max-width: 200px;">
+                    <option value="">Tous les domaines</option>
+                    <option value="IA">Intelligence Artificielle</option>
+                    <option value="SANTE">Santé</option>
+                    <option value="ENERGIE">Énergie</option>
+                </select>
+                <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem;">Filtrer</button>
+            </form>
+        </div>
+
+        <!-- Liste des Projets (Cartes) -->
+        <div class="projects-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+
+            <!-- Message si aucun projet -->
+            <div th:if="${#lists.isEmpty(projets)}" class="card text-center"
+                style="grid-column: 1 / -1; padding: 4rem;">
+                <div style="font-size: 3rem; color: var(--text-light); margin-bottom: 1rem;">
+                    <i class="fa-regular fa-folder-open"></i>
+                </div>
+                <h3>Aucun projet trouvé</h3>
+                <p style="color: var(--text-light);">Commencez par déclarer votre premier projet de recherche.</p>
+                <a th:href="@{/projets/new}" class="btn btn-primary mt-4">Nouveau Projet</a>
+            </div>
+
+            <!-- Boucle sur les projets (Exemple statique si liste vide pour démo, sinon dynamique) -->
+            <!-- Note: Pour la démo, j'ajoute une carte 'Exemple' visible si la liste est vide ou null pour montrer le design -->
+            <div class="card" style="display: flex; flex-direction: column;">
+                <div class="d-flex justify-between align-center mb-4">
+                    <span class="badge badge-success">En Cours</span>
+                    <span style="color: var(--text-light); font-size: 0.85rem;"><i class="fa-regular fa-calendar"></i>
+                        2025-2026</span>
+                </div>
+                <h3><a href="#" style="color: var(--primary-color);">Optimisation IA pour Santé</a></h3>
+                <p style="color: var(--text-light); font-size: 0.95rem; flex-grow: 1; margin-bottom: 1.5rem;">
+                    Utilisation de réseaux de neurones profonds pour le diagnostic précoce...
+                </p>
+
+                <div style="margin-bottom: 1rem;">
+                    <span class="badge" style="background: #e0f2fe; color: #0369a1;">IA</span>
+                    <span class="badge" style="background: #f3e8ff; color: #7e22ce;">Santé</span>
+                </div>
+
+                <div class="progress-bar"
+                    style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 1rem;">
+                    <div style="background: var(--accent-color); width: 75%; height: 100%;"></div>
+                </div>
+                <div class="d-flex justify-between"
+                    style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">
+                    <span>Avancement</span>
+                    <span>75%</span>
+                </div>
+
+                <div class="d-flex justify-between align-center"
+                    style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
+                    <div style="display: flex; -space-x-2: -0.5rem;">
+                        <!-- Avatars participants -->
+                        <div
+                            style="width: 30px; height: 30px; background: #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; border: 2px solid white;">
+                            JP</div>
+                        <div
+                            style="width: 30px; height: 30px; background: #bbb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; border: 2px solid white; margin-left: -10px;">
+                            AD</div>
+                    </div>
+                    <a th:href="@{/projets/1}" class="btn"
+                        style="padding: 0.5rem 1rem; font-size: 0.9rem; background: rgba(59, 130, 246, 0.1); color: var(--accent-color);">
+                        Détails <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Vrais Projets (Dynamique) -->
+            <div th:each="projet : ${projets}" class="card" style="display: flex; flex-direction: column;">
+                <div class="d-flex justify-between align-center mb-4">
+                    <span class="badge"
+                        th:classappend="${projet.statut == 'EN_COURS' ? 'badge-success' : (projet.statut == 'SUSPENDU' ? 'badge-warning' : 'badge-danger')}"
+                        th:text="${projet.statut}">Statut</span>
+                    <span style="color: var(--text-light); font-size: 0.85rem;"><i class="fa-regular fa-calendar"></i>
+                        <span th:text="${#temporals.format(projet.dateDebut, 'yyyy')}">2025</span></span>
+                </div>
+                <h3><a th:href="@{/projets/{id}(id=${projet.id})}" th:text="${projet.titre}"
+                        style="color: var(--primary-color);">Titre</a></h3>
+                <p th:text="${projet.description}"
+                    style="color: var(--text-light); font-size: 0.95rem; flex-grow: 1; margin-bottom: 1.5rem;">
+                    Description...</p>
+
+                <div style="margin-bottom: 1rem;">
+                    <span class="badge" style="background: #e0f2fe; color: #0369a1;"
+                        th:text="${projet.domaine}">Domaine</span>
+                </div>
+
+                <div class="progress-bar"
+                    style="background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 1rem;">
+                    <div style="background: var(--accent-color); height: 100%;"
+                        th:styleappend="'width: ' + ${projet.avancement} + '%'"></div>
+                </div>
+                <div class="d-flex justify-between"
+                    style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">
+                    <span>Avancement</span>
+                    <span th:text="${projet.avancement} + '%'">0%</span>
+                </div>
+
+                <div class="d-flex justify-between align-center"
+                    style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
+                    <div><!-- Participants placeholders --></div>
+                    <a th:href="@{/projets/{id}(id=${projet.id})}" class="btn"
+                        style="padding: 0.5rem 1rem; font-size: 0.9rem; background: rgba(59, 130, 246, 0.1); color: var(--accent-color);">
+                        Détails <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

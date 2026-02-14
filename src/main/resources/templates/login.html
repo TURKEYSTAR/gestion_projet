@@ -1,10 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Cartographie Projets</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .login-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
+
 <body>
-$END$
+
+    <div class="card login-card">
+        <div class="login-icon">
+            <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <h2 style="margin-bottom: 0.5rem;">Bienvenue</h2>
+        <p style="color: var(--text-light); margin-bottom: 2rem;">Connectez-vous à votre espace</p>
+
+        <div th:if="${param.error}" class="alert alert-danger"
+            style="margin-bottom: 1rem; color: var(--danger-color); background: rgba(239, 68, 68, 0.1); padding: 0.5rem; border-radius: var(--radius-sm);">
+            Identifiants incorrects.
+        </div>
+        <div th:if="${param.logout}" class="alert alert-success"
+            style="margin-bottom: 1rem; color: var(--success-color); background: rgba(16, 185, 129, 0.1); padding: 0.5rem; border-radius: var(--radius-sm);">
+            Déconnexion réussie.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="form-group" style="text-align: left;">
+                <label for="username" class="form-label">Email ou Identifiant</label>
+                <div style="position: relative;">
+                    <i class="fa-solid fa-envelope"
+                        style="position: absolute; left: 1rem; top: 1rem; color: var(--text-light);"></i>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="exemple@esmt.sn"
+                        style="padding-left: 2.5rem;" required autofocus>
+                </div>
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+                <label for="password" class="form-label">Mot de passe</label>
+                <div style="position: relative;">
+                    <i class="fa-solid fa-lock"
+                        style="position: absolute; left: 1rem; top: 1rem; color: var(--text-light);"></i>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••"
+                        style="padding-left: 2.5rem;" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                Se connecter <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <div style="margin-top: 1.5rem; font-size: 0.9rem;">
+                <a href="#" style="color: var(--text-light);">Mot de passe oublié ?</a>
+            </div>
+
+            <div style="margin-top: 1rem; border-top: 1px solid rgba(0,0,0,0.05); paddingTop: 1rem;">
+                <p style="font-size: 0.8rem; color: var(--text-light);">Ou connectez-vous avec</p>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem;">
+                    <a href="/oauth2/authorization/google" class="btn"
+                        style="background: white; border: 1px solid #e2e8f0; color: #333;">
+                        <i class="fab fa-google" style="color: #db4437;"></i> Google
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
 </body>
+
 </html>
